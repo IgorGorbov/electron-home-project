@@ -19,13 +19,15 @@ exports.changeItem = direction => {
     }
 }
 
-exports.openItem = item => {
+window.openItem = item => {
     if (!this.toReadItems.length) return
 
     let targetItem = $('.read-item.is-active')
     let contentURL = encodeURIComponent(targetItem.data('url'))
 
-    let renderWinURL =`file://${__dirname}/render.html?url=${contentURL}`
+    let itemIndex = targetItem.index() - 1
+
+    let renderWinURL =`file://${__dirname}/render.html?url=${contentURL}&itemIndex=${itemIndex}`
     let renderWin = window.open(renderWinURL, targetItem.data('title'))
 }    
 
@@ -48,5 +50,27 @@ exports.addItem = item => {
     $('.read-item')
         .off('click', 'dblclick')
         .on('click', this.selectItem)
-        .on('dblclick', this.openItem)
+        .on('dblclick', window.openItem)
+}
+
+window.deleteItem = (i = false) => {
+    if (i === false) i = $('.read-item.is-active').index() - 1
+    
+    $('.read-item').eq(i).remove() 
+    this.toReadItems = this.toReadItems.filter((_, index) => index !== i) 
+    this.saveItems()
+    if (this.toReadItems.length) {
+        let newIndex = (i === 0) ? 0 : i - 1
+        $('.read-item').eq(newIndex).addClass('is-active')
+    } else {
+        $('#no-items').show()
+    }
+}
+
+window.openInBrowser = () => {
+    if (!this.toReadItems.length) return
+
+    let targetItem = $('.read-item.is-active')
+
+    require('electron').shell.openExternal(targetItem.data('url'))
 }

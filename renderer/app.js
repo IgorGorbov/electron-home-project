@@ -1,5 +1,6 @@
 const { ipcRenderer } = require('electron')
 const items = require('./items')
+const menu = require('./menu')
 
 $(document).keydown(e => {
     switch (e.key) {
