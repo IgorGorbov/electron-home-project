@@ -2,9 +2,9 @@ const { app, ipcMain } = require("electron");
 const mainWindow = require("./mainWindow");
 const readItem = require("./readItem");
 
-require("electron-reload")(__dirname, {
-  electron: require("${__dirname}/../../node_modules/electron")
-});
+// require("electron-reload")(__dirname, {
+//   electron: require("${__dirname}/../../node_modules/electron")
+// });
 
 process.env["ELECTRON_DISABLE_SECURITY_WARNINGS"] = true;
 
